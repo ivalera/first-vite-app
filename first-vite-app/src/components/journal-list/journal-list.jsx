@@ -4,7 +4,7 @@ import JournalItem from '../journal-item/journal-item';
 
 function JournalList({ items }) {
     if(items.length === 0) {
-        return <p>Пока записе нет, добавьте первую</p>;
+        return <p>Пока записей нет, добавьте первую</p>;
     }
 
     const sortItems = (a, b) => {
