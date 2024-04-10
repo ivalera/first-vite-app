@@ -3,16 +3,36 @@ import Button from '../button/button';
 import styles from "./journal-form.module.css";
 import cn from 'classnames';
 import { formReducer, INITIAL_STATE } from './journal-form.state';
+import { useRef } from 'react';
 
 
 
 function JournalForm({ onSubmit }) {
     const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
     const { isValid, isFormReadyToSubmit, values } = formState;
+    const titleRef = useRef();
+    const dateRef = useRef();
+    const postRef = useRef();
+
+    const focusError = (isValid) => {
+        switch(true){
+            case !isValid.title:
+                titleRef.current.focus();
+                break;
+            case !isValid.date:
+                dateRef.current.focus();
+                break;
+            case !isValid.post:
+                postRef.current.focus();
+                break;
+        }
+        
+    };
 
     useEffect(() => {
         let timerId;
         if(!isValid.date || !isValid.post || !isValid.title){
+            focusError(isValid);
             timerId = setTimeout(() => {
                 dispatchForm({ type: 'RESET_VALIDITY' });
             }, 2000);
@@ -43,8 +63,9 @@ function JournalForm({ onSubmit }) {
         <form className={styles['journal-form']} onSubmit={addJournalItem}>
             <div>
                 <input 
-                    type="text" 
+                    type="text"
                     name='title'
+                    ref={titleRef}
                     value={values.title}
                     className={cn(styles['input-title'], {[styles['invalid']]: !isValid.title})}
                     onChange={onChange}
@@ -58,6 +79,7 @@ function JournalForm({ onSubmit }) {
                 <input 
                     type="date" 
                     name="date"
+                    ref={dateRef}
                     value={values.date} 
                     id="date"
                     className={cn(styles['input'], {[styles['invalid']]: !isValid.date})}
@@ -79,6 +101,7 @@ function JournalForm({ onSubmit }) {
             </div>
             <textarea 
                 name="post"
+                ref={postRef}
                 value={values.post}  
                 id="" 
                 cols="30" 

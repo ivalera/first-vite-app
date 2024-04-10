@@ -28,8 +28,8 @@ export function formReducer(state, action) {
             return {
                 ...state,
                 isValid: {
-                    post: postValidity,
                     title: titleValidity,
+                    post: postValidity,
                     date: dateValidity   
                 },
                 isFormReadyToSubmit: titleValidity && postValidity && dateValidity
