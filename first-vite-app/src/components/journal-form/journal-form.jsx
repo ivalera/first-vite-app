@@ -1,5 +1,6 @@
 import { useEffect, useReducer } from 'react';
 import Button from '../button/button';
+import Input from '../input/input';
 import styles from "./journal-form.module.css";
 import cn from 'classnames';
 import { formReducer, INITIAL_STATE } from './journal-form.state';
@@ -62,13 +63,14 @@ function JournalForm({ onSubmit }) {
     return (
         <form className={styles['journal-form']} onSubmit={addJournalItem}>
             <div>
-                <input 
+                <Input 
                     type="text"
                     name='title'
                     ref={titleRef}
                     value={values.title}
-                    className={cn(styles['input-title'], {[styles['invalid']]: !isValid.title})}
                     onChange={onChange}
+                    isValid={isValid.title}
+                    appearance="title"
                 />
             </div>
             <div className={styles['form-row']}>
@@ -76,14 +78,14 @@ function JournalForm({ onSubmit }) {
                     <img src="/calendar.svg" alt="Иконка календаря" />
                     <span>Дата</span>
                 </label>
-                <input 
+                <Input 
                     type="date" 
                     name="date"
                     ref={dateRef}
                     value={values.date} 
                     id="date"
-                    className={cn(styles['input'], {[styles['invalid']]: !isValid.date})}
                     onChange={onChange}
+                    isValid={isValid.date}
                 />
             </div>
             <div className={styles['form-row']}>
@@ -91,13 +93,13 @@ function JournalForm({ onSubmit }) {
                     <img src="/folder.svg" alt="Иконка папкм" />
                     <span>Метки</span>
                 </label>
-                <input 
+                <Input 
                     type="text" 
                     name='tag' 
                     value={values.tag}  
-                    id='tag' 
-                    className={styles['input']} 
-                    onChange={onChange}/>
+                    id='tag'
+                    onChange={onChange}
+                />
             </div>
             <textarea 
                 name="post"
