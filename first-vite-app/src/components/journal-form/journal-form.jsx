@@ -5,8 +5,8 @@ import styles from "./journal-form.module.css";
 import cn from 'classnames';
 import { formReducer, INITIAL_STATE } from './journal-form.state';
 import { useRef } from 'react';
-
-
+import { UserContext } from '../../context/user.context';
+import { useContext } from 'react';
 
 function JournalForm({ onSubmit }) {
     const [formState, dispatchForm] = useReducer(formReducer, INITIAL_STATE);
@@ -14,6 +14,7 @@ function JournalForm({ onSubmit }) {
     const titleRef = useRef();
     const dateRef = useRef();
     const postRef = useRef();
+    const { userId } = useContext(UserContext);
 
     const focusError = (isValid) => {
         switch(true){
@@ -56,12 +57,12 @@ function JournalForm({ onSubmit }) {
 
     const addJournalItem = (e) => {
         e.preventDefault();
-        
         dispatchForm({ type: 'SUBMIT' })
     };
 
     return (
         <form className={styles['journal-form']} onSubmit={addJournalItem}>
+            {userId}    
             <div>
                 <Input 
                     type="text"
@@ -70,8 +71,7 @@ function JournalForm({ onSubmit }) {
                     value={values.title}
                     onChange={onChange}
                     isValid={isValid.title}
-                    appearance="title"
-                />
+                    appearance="title"/>
             </div>
             <div className={styles['form-row']}>
                 <label htmlFor="date" className={styles['form-label']}>
@@ -85,12 +85,11 @@ function JournalForm({ onSubmit }) {
                     value={values.date} 
                     id="date"
                     onChange={onChange}
-                    isValid={isValid.date}
-                />
+                    isValid={isValid.date}/>
             </div>
             <div className={styles['form-row']}>
                 <label htmlFor="tag" className={styles['form-label']}>
-                    <img src="/folder.svg" alt="Иконка папкм" />
+                    <img src="/folder.svg" alt="Иконка папки" />
                     <span>Метки</span>
                 </label>
                 <Input 
@@ -98,8 +97,7 @@ function JournalForm({ onSubmit }) {
                     name='tag' 
                     value={values.tag}  
                     id='tag'
-                    onChange={onChange}
-                />
+                    onChange={onChange}/>
             </div>
             <textarea 
                 name="post"
@@ -109,12 +107,11 @@ function JournalForm({ onSubmit }) {
                 cols="30" 
                 rows="10"
                 className={cn(styles['input'], {[styles['invalid']]: !isValid.post})}
-                onChange={onChange}
-            >
+                onChange={onChange}>
             </textarea>
             <Button text="Сохранить" />
-        </form>
-  )
+        </form> 
+    );
 }
 
 export default JournalForm;
